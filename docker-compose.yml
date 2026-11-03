@@ -1,0 +1,78 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cirrus
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cirrus}
+      POSTGRES_DB: cirrus
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cirrus"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      CIRRUS_ENV: ${CIRRUS_ENV:-development}
+      CIRRUS_DATABASE_URL: postgresql+psycopg://cirrus:${POSTGRES_PASSWORD:-cirrus}@db:5432/cirrus
+      CIRRUS_ALLOWED_ORIGINS: ${PUBLIC_URL:-http://localhost:3000}
+      CIRRUS_PUBLIC_URL: ${PUBLIC_URL:-http://localhost:3000}
+      CIRRUS_TIMEZONE: ${CIRRUS_TIMEZONE:-America/Toronto}
+      CIRRUS_TRUST_PROXY: "true"
+      CIRRUS_AI_ENABLED: ${CIRRUS_AI_ENABLED:-true}
+      CIRRUS_OLLAMA_URL: http://ollama:11434
+      CIRRUS_OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+      CIRRUS_COOKIE_SECURE: ${CIRRUS_COOKIE_SECURE:-false}
+      CIRRUS_DOCS_ENABLED: ${CIRRUS_DOCS_ENABLED:-true}
+      CIRRUS_SMTP_HOST: ${CIRRUS_SMTP_HOST:-}
+      CIRRUS_SMTP_PORT: ${CIRRUS_SMTP_PORT:-587}
+      CIRRUS_SMTP_USERNAME: ${CIRRUS_SMTP_USERNAME:-}
+      CIRRUS_SMTP_PASSWORD: ${CIRRUS_SMTP_PASSWORD:-}
+      CIRRUS_SMTP_FROM: ${CIRRUS_SMTP_FROM:-Cirrus <no-reply@example.com>}
+    depends_on:
+      db:
+        condition: service_healthy
+    # The API has no published port. Only the website can reach it.
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_INTERNAL_URL: http://api:8000
+        NEXT_PUBLIC_GITHUB_URL: ${NEXT_PUBLIC_GITHUB_URL:-}
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Downloads the model once, then exits. The advisor uses it as soon as it's ready.
+  ollama-pull:
+    image: ollama/ollama:latest
+    environment:
+      OLLAMA_HOST: ollama:11434
+    command: ["pull", "${OLLAMA_MODEL:-llama3.2}"]
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  db-data:
+  ollama-data:

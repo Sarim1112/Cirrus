@@ -1,0 +1,28 @@
+# Use together with docker-compose.yml. See docs/DEPLOYMENT.md.
+services:
+  api:
+    environment:
+      CIRRUS_ENV: production
+      CIRRUS_COOKIE_SECURE: "true"
+
+  web:
+    ports: !reset []
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - web
+
+volumes:
+  caddy-data:
+  caddy-config:
