@@ -50,7 +50,7 @@ This design has a useful side effect: **Cirrus works with no model at all**. If 
 You need [Docker](https://docs.docker.com/get-docker/). Nothing else, and no API keys.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cirrus.git
+git clone https://github.com/Sarim1112/cirrus.git
 cd cirrus
 cp .env.example .env
 docker compose up --build
