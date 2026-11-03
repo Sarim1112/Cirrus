@@ -51,7 +51,7 @@ You need [Docker](https://docs.docker.com/get-docker/). Nothing else, and no API
 
 ```bash
 git clone https://github.com/Sarim1112/Cirrus.git
-cd cirrus
+cd Cirrus
 cp .env.example .env
 docker compose up --build
 ```
