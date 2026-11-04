@@ -6,7 +6,7 @@ A personal finance advisor that reads your bank statements, forecasts your balan
 
 ## Why it's different
 
-Most finance chatbots ask a language model to read your data and do the sums. Models get arithmetic wrong, and with money that's the one thing you can't have.
+Most finance chatbots ask a language model to read your data and do the sums. Models get arithmetic wrong, and with money that's the one thing you can't risk.
 
 In Cirrus, **code calculates every number and the AI only helps with wording**. A verifier then checks each figure in the AI's reply against the calculations. If a figure doesn't match, Cirrus asks once more, then falls back to the calculated answer.
 
