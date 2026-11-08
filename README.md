@@ -32,7 +32,7 @@ This design has a useful side effect: **Cirrus works with no model at all**. If 
 
 | | |
 |---|---|
-| **Smart statement import** | CSV and PDF, with a preview before anything is saved. Handles messy dates and amounts, cleans merchant names, categorizes, removes duplicates and learns from your corrections. |
+| **Smart statement import** | CSV and PDF, with a preview before anything is saved. Handles messy dates and amounts, cleans merchant names, categorizes, removes duplicates, and learns from your corrections. |
 | **Grounded advisor** | Plain-language answers with inline charts, plus the exact transactions behind them. |
 | **Personal budgets** | Targets come from your own history. Fixed bills are covered, flexible spending moves toward your better months, and occasional costs become a monthly set-aside. |
 | **Proactive insights** | Double charges, unusual purchases, price increases, slow category creep and subscriptions you may have forgotten. |
