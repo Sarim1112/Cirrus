@@ -1,6 +1,6 @@
 # Cirrus
 
-A personal finance advisor that reads your bank statements, forecasts your balance and gives budget tips you can trace back to real transactions. It runs on a free local AI model, so there are no API bills and your statements don't go to an outside AI company.
+A personal finance advisor that reads your bank statements, forecasts your balance, and gives budget tips you can trace back to real transactions. It runs on a free local AI model, so there are no API bills, and your statements don't go to an outside AI company.
 
 ![The Cirrus overview, showing what's safe to spend above a balance forecast](docs/screenshots/overview.png)
 
